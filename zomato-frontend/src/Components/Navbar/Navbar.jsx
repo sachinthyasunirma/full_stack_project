@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { FaUserAlt } from 'react-icons/fa'
 import { RiArrowDropDownLine, RiArrowDropUpLine } from 'react-icons/ri';
 import { GiHamburgerMenu } from 'react-icons/gi';
+import classnames from 'classnames';
 
 //import custom css
 import './Navbar.css'
+import { Link, useParams } from 'react-router-dom';
 
 const MobileNav = () => {
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
@@ -53,22 +55,31 @@ const LargeNav = () => {
   const [user, setUser] = useState(
     // {fullName:"sachitnhya"}
   );
+  const [navTab, setNavTab] = useState(["Projects","Experience","Stack"]);
+  const {type} = useParams();
 
   const handleonClick = (index) => {
     setIsActiveNavTab(index);
   }
-  const NavTabs = ["Projects", "Experience", "Stack"];
+  // <button key={index} onClick={() => handleonClick(index)} className={`hover:bg-gray-800 hover:rounded-md p-2 ${isActiveNavTab === index ? "focus:border-b-2" : "focus:border-none"}`}><span className='hover:text-gray-300'>{navtab}</span></button>
   return (
-    <div className='hidden lg:inline container w-full px-20 mx-auto bg-slate-900 text-white'>
+    <div className='hidden lg:inline container w-full px-20 mx-auto bg-slate-900 text-white py-2'>
       <div className='gap-4 w-full items-center justify-around lg:flex'>
         <div className='w-28'>
           <span className='font-bold'>GHub</span>
         </div>
         <div className='w-full shadow-md p-2 flex items-center justify-center gap-3 rounded-full'>
           <div id='navTab' className='flex items-center gap-2 pr-2'>
-            {NavTabs.map((navtab, index) => {
+            {navTab.map((navtab, index) => {
               return (
-                <button key={index} onClick={() => handleonClick(index)} className={`hover:bg-gray-800 hover:rounded-md p-2 ${isActiveNavTab === index ? "focus:border-b-2" : "focus:border-none"}`}><span className='hover:text-gray-300'>{navtab}</span></button>
+                <Link to={`/${navtab}`} className='w-full mx-6'>
+                  <span className={classnames(
+                    "text-white",
+                    {
+                      "border-b-2 border-red-800 bg-gray-800 p-3 rounded-md": type === navtab
+                    }
+                  )}>{navtab}</span>
+                </Link>
               )
             })}
           </div>
